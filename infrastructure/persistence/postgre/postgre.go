@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
-const driverName = "postgre"
+const driverName = "postgres"
 
 type SQLHandler struct {
 	Conn *sql.DB
@@ -19,14 +21,20 @@ func NewSQLHandler() SQLHandler {
 	password := os.Getenv("POSTGRES_PASSWORD")
 	host := os.Getenv("POSTGRES_HOST")
 	port := os.Getenv("POSTGRES_PORT")
-	database := os.Getenv("POSTGRES_DATABASE")
+	database := os.Getenv("POSTGRES_DB")
 
-	// 接続情報は以下のように指定する.
-	// user:password@tcp(host:port)/database
 	conn, err := sql.Open(driverName,
-		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, database))
+		fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, database))
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	err = conn.Ping()
+
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("connect!")
 	}
 
 	return SQLHandler{

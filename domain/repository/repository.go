@@ -1,6 +1,9 @@
 package repository
 
+import "lifegame/domain/model"
+
 type UserRepository interface {
-	Create(name string) (authToken string, err error)
-	Get(userID string) (user *domain.User, err error)
+	Create(id string, token string, name string) (user *model.User, err error)
+	Get(userID string) (user *model.User, err error)
+	SelectByAuthToken(authToken string) (user *model.User, err error)
 }
