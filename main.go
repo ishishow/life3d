@@ -2,11 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"github.com/joho/godotenv"
 	"lifegame/presenter/http/server"
-	"log"
-	"os"
 )
 
 var (
@@ -20,10 +16,10 @@ func init() {
 
 func main() {
 
-	err := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
-	if err != nil {
-		log.Fatalf("getenv is failed! :%v", err)
-	}
+	//err := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
+	//if err != nil {
+	//	log.Fatalf("getenv is failed! :%v", err)
+	//}
 
 	server.Serve(addr)
 }
