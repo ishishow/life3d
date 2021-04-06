@@ -1,1 +1,1 @@
-web: bin/lifegame
+web: bin/lifegame-3d
