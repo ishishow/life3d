@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"github.com/joho/godotenv"
 	"lifegame/presenter/http/server"
+	"log"
 	"os"
 )
 
@@ -11,16 +13,17 @@ var (
 )
 
 func init() {
-	flag.StringVar(&addr, "addr", ":"+os.Getenv("PORT"), "tcp host:port to connect")
+	//flag.StringVar(&addr, "addr", ":"+os.Getenv("PORT"), "tcp host:port to connect")
+	flag.StringVar(&addr, "addr", ":8080", "tcp host:port to connect")
 	flag.Parse()
 }
 
 func main() {
 
-	//err := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
-	//if err != nil {
-	//	log.Fatalf("getenv is failed! :%v", err)
-	//}
+	err := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
+	if err != nil {
+		log.Fatalf("getenv is failed! :%v", err)
+	}
 
 	server.Serve(addr)
 }
