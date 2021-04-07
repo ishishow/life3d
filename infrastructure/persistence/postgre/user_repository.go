@@ -17,7 +17,7 @@ func NewUserRepositoryImpl(sqlHandler SQLHandler) repository.UserRepository {
 	}
 }
 
-func (uri userRepositoryImpl) Create(id string, token string, name string) (*model.User, error) {
+func (uri *userRepositoryImpl) Create(id string, token string, name string) (*model.User, error) {
 	user := &model.User{
 		ID:        id,
 		AuthToken: token,
@@ -33,12 +33,12 @@ func (uri userRepositoryImpl) Create(id string, token string, name string) (*mod
 	return user, err
 }
 
-func (uri userRepositoryImpl) Get(userID string) (*model.User, error) {
+func (uri *userRepositoryImpl) Get(userID string) (*model.User, error) {
 	row := uri.SQLHandler.Conn.QueryRow("SELECT * FROM users WHERE id = $1", userID)
 	return convertToUser(row)
 }
 
-func (uri userRepositoryImpl) SelectByAuthToken(authToken string) (*model.User, error) {
+func (uri *userRepositoryImpl) SelectByAuthToken(authToken string) (*model.User, error) {
 	row := uri.SQLHandler.Conn.QueryRow("SELECT * FROM users WHERE auth_token = $1", authToken)
 	return convertToUser(row)
 }

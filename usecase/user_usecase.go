@@ -21,7 +21,7 @@ func NewUserUseCase(userRepo repository.UserRepository) UserUseCase {
 		repository: userRepo,
 	}
 }
-func (uu userUseCase) Create(name string) (*model.User, error) {
+func (uu *userUseCase) Create(name string) (*model.User, error) {
 	userID, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
@@ -34,10 +34,10 @@ func (uu userUseCase) Create(name string) (*model.User, error) {
 	return uu.repository.Create(userID.String(), token.String(), name)
 }
 
-func (uu userUseCase) Get(userID string) (*model.User, error) {
+func (uu *userUseCase) Get(userID string) (*model.User, error) {
 	return uu.repository.Get(userID)
 }
 
-func (uu userUseCase) SelectByAuthToken(authToken string) (*model.User, error) {
+func (uu *userUseCase) SelectByAuthToken(authToken string) (*model.User, error) {
 	return uu.repository.SelectByAuthToken(authToken)
 }

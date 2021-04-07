@@ -15,10 +15,10 @@ func NewLifeModelRepositoryImpl(sqlHandler SQLHandler) repository.LifeModelRepos
 	}
 }
 
-func (lri lifeModelRepositoryImpl) Create() error {
+func (lri *lifeModelRepositoryImpl) Create() error {
 	return nil
 }
 
-func (lri lifeModelRepositoryImpl) Get(ID string) (*model.LifeModel, error) {
+func (lri *lifeModelRepositoryImpl) Get(ID string) (*model.LifeModel, error) {
 	return nil, nil
 }
