@@ -54,7 +54,6 @@ type userCreateResponse struct {
 // HandleGet ユーザー取得処理
 func (h UserHandler) HandleGet() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		// Contextから認証済みのユーザIDを取得
 		ctx := request.Context()
 		userID := dcontext.GetUserIDFromContext(ctx)
 
@@ -65,7 +64,6 @@ func (h UserHandler) HandleGet() http.HandlerFunc {
 			return
 		}
 
-		// レスポンスに必要な情報を詰めて返却
 		response.Success(writer, &userGetResponse{
 			ID:   user.ID,
 			Name: user.Name,
@@ -77,3 +75,5 @@ type userGetResponse struct {
 	ID   string
 	Name string
 }
+
+type userGetRequest struct{}

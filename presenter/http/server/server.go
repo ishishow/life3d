@@ -10,13 +10,14 @@ import (
 func Serve(addr string) {
 
 	uh := registry.InitializeUserHandler()
+	lh := registry.InitializeLifeModelHandler()
 	auth := registry.InitializeAuth()
 
 	http.HandleFunc("/user/create", post(uh.HandleCreate()))
 	http.HandleFunc("/user/get", get(auth.Authenticate(uh.HandleGet())))
-	//http.HandleFunc("/model/create", post(auth.Authenticate(handler.HandleGet())))
-	//http.HandleFunc("/model/get", get(auth.Authenticate(handler.HandleGet())))
-	//http.HandleFunc("/model/ranking", get(auth.Authenticate(handler.HandleGet())))
+	http.HandleFunc("/model/create", post(auth.Authenticate(lh.HandleCreate())))
+	http.HandleFunc("/model/get", get(auth.Authenticate(lh.HandleGet())))
+	http.HandleFunc("/model/ranking", get(auth.Authenticate(lh.HandleRanking())))
 
 	/* ===== サーバの起動 ===== */
 	log.Println("Server running...")

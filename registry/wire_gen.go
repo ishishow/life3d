@@ -29,3 +29,11 @@ func InitializeUserHandler() handler.UserHandler {
 	userHandler := handler.NewUserHandler(userUseCase)
 	return userHandler
 }
+
+func InitializeLifeModelHandler() handler.LifeModelHandler {
+	sqlHandler := postgre.NewSQLHandler()
+	lifeModelRepository := postgre.NewLifeModelRepositoryImpl(sqlHandler)
+	lifeModelUseCase := usecase.NewLifeModelUseCase(lifeModelRepository)
+	lifeModelHandler := handler.NewLifeModelHandler(lifeModelUseCase)
+	return lifeModelHandler
+}

@@ -30,3 +30,14 @@ func InitializeUserHandler() handler.UserHandler {
 	)
 	return handler.UserHandler{}
 }
+
+func InitializeLifeModelHandler() handler.LifeModelHandler {
+
+	wire.Build(
+		usecase.NewLifeModelUseCase,
+		postgre.NewSQLHandler,
+		handler.NewLifeModelHandler,
+		postgre.NewLifeModelRepositoryImpl,
+	)
+	return handler.LifeModelHandler{}
+}
