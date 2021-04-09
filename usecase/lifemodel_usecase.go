@@ -3,13 +3,15 @@ package usecase
 import (
 	"lifegame/domain/model"
 	"lifegame/domain/repository"
-	"log"
+
+	"github.com/google/uuid"
 )
 
 type LifeModelUseCase interface {
-	Create(userID string, lifeMap []int) error
+	Create(lifeModel *model.LifeModel) error
 	Get(ID string) (*model.LifeModel, error)
 	Ranking() ([]*model.LifeModel, error)
+	SetFavorite(ID string, userID string) error
 }
 
 type lifeModelUseCase struct {
@@ -24,12 +26,13 @@ func NewLifeModelUseCase(lifeModelRepo repository.LifeModelRepository,
 	}
 }
 
-func (lu *lifeModelUseCase) Create(userID string, lifeMap []int) error {
-	log.Println(userID, lifeMap)
-	if err := lu.lifeModelRepository.Create(userID, lifeMap); err != nil {
+func (lu *lifeModelUseCase) Create(lifeModel *model.LifeModel) error {
+	ID, err := uuid.NewRandom()
+	if err != nil {
 		return err
 	}
-	return nil
+	lifeModel.ID = ID.String()
+	return lu.lifeModelRepository.Create(lifeModel)
 }
 
 func (lu *lifeModelUseCase) Get(ID string) (*model.LifeModel, error) {
@@ -37,14 +40,23 @@ func (lu *lifeModelUseCase) Get(ID string) (*model.LifeModel, error) {
 	if err != nil {
 		return lifeModel, err
 	}
-
 	return lu.fillUserDetails(lifeModel)
 }
 
+func (lu *lifeModelUseCase) SetFavorite(ID string, userID string) error {
+	return lu.lifeModelRepository.SetFavorite(ID, userID)
+}
+
 func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
+	lu.lifeModelRepository.
 	return nil, nil
 }
 
 func (lu *lifeModelUseCase) fillUserDetails(lifeModel *model.LifeModel) (*model.LifeModel, error) {
-	return lifeModel, nil
+	user, err := lu.userRepository.Get(lifeModel.User.ID)
+	if err != nil {
+		return nil, err
+	}
+	lifeModel.User = user
+	return lifeModel, err
 }

@@ -7,7 +7,8 @@ import (
 type key string
 
 const (
-	userIDKey key = "userID"
+	userIDKey  key = "userID"
+	rankingNum     = 10
 )
 
 // SetUserID ContextへユーザIDを保存する

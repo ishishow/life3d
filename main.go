@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
-	"github.com/joho/godotenv"
+	"fmt"
 	"lifegame/presenter/http/server"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 var (

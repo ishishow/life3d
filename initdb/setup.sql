@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS life_models (
     PRIMARY KEY("id")
 );
 
-CREATE TABLE IF NOT EXISTS favorite (
+CREATE TABLE IF NOT EXISTS favorites (
     "user_id" VARCHAR(128) NOT NULL,
     "life_model_id" VARCHAR(128) NOT NULL,
+    UNIQUE ("user_id", "life_model_id")
 );

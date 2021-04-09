@@ -18,6 +18,7 @@ func Serve(addr string) {
 	http.HandleFunc("/model/create", post(auth.Authenticate(lh.HandleCreate())))
 	http.HandleFunc("/model/get", get(auth.Authenticate(lh.HandleGet())))
 	http.HandleFunc("/model/ranking", get(auth.Authenticate(lh.HandleRanking())))
+	http.HandleFunc("/model/favorite", post(auth.Authenticate(lh.HandleCreateFavorite())))
 
 	/* ===== サーバの起動 ===== */
 	log.Println("Server running...")

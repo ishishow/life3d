@@ -33,7 +33,8 @@ func InitializeUserHandler() handler.UserHandler {
 func InitializeLifeModelHandler() handler.LifeModelHandler {
 	sqlHandler := postgre.NewSQLHandler()
 	lifeModelRepository := postgre.NewLifeModelRepositoryImpl(sqlHandler)
-	lifeModelUseCase := usecase.NewLifeModelUseCase(lifeModelRepository)
+	userRepository := postgre.NewUserRepositoryImpl(sqlHandler)
+	lifeModelUseCase := usecase.NewLifeModelUseCase(lifeModelRepository, userRepository)
 	lifeModelHandler := handler.NewLifeModelHandler(lifeModelUseCase)
 	return lifeModelHandler
 }

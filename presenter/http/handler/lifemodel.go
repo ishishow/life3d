@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"encoding/json"
+	"lifegame/domain/model"
 	"lifegame/presenter/dcontext"
 	"lifegame/presenter/http/response"
 	"lifegame/usecase"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type LifeModelHandler struct {
@@ -23,7 +26,30 @@ func (lh LifeModelHandler) HandleCreate() http.HandlerFunc {
 		ctx := request.Context()
 		userID := dcontext.GetUserIDFromContext(ctx)
 
-		if err := lh.LifeModelUseCase.Create(userID, make([]int, 5, 5)); err != nil {
+		var requestBody createLifeModelRequest
+		if err := json.NewDecoder(request.Body).Decode(&requestBody); err != nil {
+			log.Println(err)
+			response.BadRequest(writer, "Content-Type must be application/json")
+			return
+		}
+		var strMap string
+		for _, i := range requestBody.Map {
+			strMap += strconv.Itoa(i)
+		}
+
+		lifeModel := &model.LifeModel{
+			ID:   "",
+			Name: requestBody.Name,
+			Map:  strMap,
+			User: &model.User{
+				ID:        userID,
+				Name:      "",
+				AuthToken: "",
+			},
+			Favorite: 0,
+		}
+
+		if err := lh.LifeModelUseCase.Create(lifeModel); err != nil {
 			log.Printf("%v", err)
 			response.InternalServerError(writer, "error")
 		}
@@ -33,54 +59,71 @@ func (lh LifeModelHandler) HandleCreate() http.HandlerFunc {
 
 func (lh LifeModelHandler) HandleGet() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		ctx := request.Context()
-		userID := dcontext.GetUserIDFromContext(ctx)
+		var requestBody getLifeModelRequest
+		if err := json.NewDecoder(request.Body).Decode(&requestBody); err != nil {
+			log.Println(err)
+			response.BadRequest(writer, "Content-Type must be application/json")
+			return
+		}
 
-		lifemodel, err = lh.LifeModelUseCase.Get(userID)
+		lifeModel, err := lh.LifeModelUseCase.Get(requestBody.ID)
 		if err != nil {
 			log.Printf("%v", err)
 			response.InternalServerError(writer, "error")
 		}
 
 		response.Success(writer, &getLifeModelResponse{
-			LifeModel: lifemodel,
+			LifeModel: lifeModel,
 		})
+	}
+}
+
+func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		var requestBody setFavoriteRequest
+		if err := json.NewDecoder(request.Body).Decode(&requestBody); err != nil {
+			log.Println(err)
+			response.BadRequest(writer, "Content-Type must be application/json")
+			return
+		}
+
+		if err := lh.LifeModelUseCase.SetFavorite(requestBody.ID); err != nil {
+			log.Printf("%v", err)
+			response.InternalServerError(writer, "error")
+		}
+
+		response.Success(writer, &setFavoriteResponse{})
 	}
 }
 
 func (lh LifeModelHandler) HandleRanking() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		//response.Success(writer, &rankingLifeModelResponse{
-		//	LifeModelList:
-		//})
 	}
 }
 
 type createLifeModelRequest struct {
-	UserID string
-	Map    []int
+	UserID string `json:"user_id"`
+	Name   string `json:"name"`
+	Map    []int  `json:"map"`
 }
 
 type createLifeModelResponse struct{}
 
 type getLifeModelRequest struct {
-	ID string
+	ID string `json:"id"`
 }
 
 type getLifeModelResponse struct {
-	LifeModel lifeModel
+	LifeModel *model.LifeModel
 }
+
+type setFavoriteRequest struct {
+	ID string `json:"id"`
+}
+type setFavoriteResponse struct{}
 
 type rankingLifeModelRequest struct{}
 
 type rankingLifeModelResponse struct {
-	LifeModelList []lifeModel
-}
-
-type lifeModel struct {
-	ID       string
-	Name     string
-	Map      []int
-	UserName string
-	Favorite int
+	LifeModelList []*model.LifeModel
 }

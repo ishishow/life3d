@@ -3,11 +3,12 @@
 package registry
 
 import (
-	"github.com/google/wire"
 	"lifegame/infrastructure/persistence/postgre"
 	"lifegame/presenter/http/handler"
 	"lifegame/presenter/http/middleware"
 	"lifegame/usecase"
+
+	"github.com/google/wire"
 )
 
 func InitializeAuth() middleware.Middleware {
@@ -38,6 +39,7 @@ func InitializeLifeModelHandler() handler.LifeModelHandler {
 		postgre.NewSQLHandler,
 		handler.NewLifeModelHandler,
 		postgre.NewLifeModelRepositoryImpl,
+		postgre.NewUserRepositoryImpl,
 	)
 	return handler.LifeModelHandler{}
 }
