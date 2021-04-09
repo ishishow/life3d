@@ -23,7 +23,7 @@ func (lh LifeModelHandler) HandleCreate() http.HandlerFunc {
 		ctx := request.Context()
 		userID := dcontext.GetUserIDFromContext(ctx)
 
-		if err := lh.LifeModelUseCase.Create(); err != nil {
+		if err := lh.LifeModelUseCase.Create(userID, make([]int, 5, 5)); err != nil {
 			log.Printf("%v", err)
 			response.InternalServerError(writer, "error")
 		}

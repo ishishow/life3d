@@ -1,8 +1,9 @@
 package model
 
 type LifeModel struct {
-	ID     string
-	UserID string
-	Name   string
-	Map    string
+	ID       string
+	User     User
+	Name     string
+	Map      string
+	Favorite int
 }

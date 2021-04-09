@@ -15,10 +15,12 @@ func NewLifeModelRepositoryImpl(sqlHandler SQLHandler) repository.LifeModelRepos
 	}
 }
 
-func (lri *lifeModelRepositoryImpl) Create() error {
+func (lri *lifeModelRepositoryImpl) Create(userID string, lifeMap []int) error {
+
 	return nil
 }
 
 func (lri *lifeModelRepositoryImpl) Get(ID string) (*model.LifeModel, error) {
+	//row := lri.SQLHandler.Conn.QueryRow("SELECT * FROM users WHERE id = $1", ID)
 	return nil, nil
 }
