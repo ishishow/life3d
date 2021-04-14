@@ -1,45 +1,40 @@
-ハッカソン仕様書（仮）
+# LIFEGAME3D
 
-サービス内容
-ライフゲームの３D版
+## 使用技術
+- unity
+- React　⇨ https://logmi.jp/tech/articles/323164
+- golang
+- heroku
+- postgres
 
-使用技術
-unity
-golang
-React　⇨ https://logmi.jp/tech/articles/323164
+## ユースケース
 
+- ライフゲームのルールを変更できる
+- コマ送り、一時停止などができる
+- 他のユーザーの作成したモデルをみれる
+- 他のユーザーのモデルをお気に入り登録できる
+- ユーザーがモデルを登録できる
+- ユーザーが実際に試行できる
+- ユーザーが名前を登録する
+- ユーザーを登録できる
+- お気に入り順にモデルが見れる
+- (ユーザーが自分で登録したモデルを見れるようにする)
 
+## API仕様
+- user/create  POST ユーザー登録
+- user/get  GET ユーザーネーム取得
+- user/models  GET ユーザーが登録したモデル一覧
+- model/ranking GET モデルお気に入り順
+- model/create POST モデル登録
+- model/get GET 他のモデル情報を返す
+- model/favorite GET 他のモデル情報を返す
 
-ユースケース
+## エンドポイント
+編集中
 
-ライフゲームのルールを変更できる
-
-コマ送り、一時停止などができる
-
-他のユーザーの作成したモデルをみれる
-
-他のユーザーのモデルをお気に入り登録できる
-
-ユーザーがモデルを登録できる
-
-ユーザーが実際に試行できる
-
-ユーザーが名前を登録する
-
-ユーザーを登録できる
-
-お気に入り順にモデルが見れる
-
-(ユーザーが自分で登録したモデルを見れるようにする)
-
-API仕様
-user/create  ユーザー登録
-user/get  ユーザーネーム取得
-user/models ユーザーが登録したモデル一覧
-model/ranking モデルお気に入り順
-model/create モデル登録
-model/get 他のモデル情報を返す
-
+## schema
+編集中
+```
 post user/create
 request{
 name: “hogehoge”
