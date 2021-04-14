@@ -78,8 +78,14 @@ func (lh LifeModelHandler) HandleGet() http.HandlerFunc {
 	}
 }
 
+func (lh LifeModelHandler) HandleRanking() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {}
+}
+
 func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		ctx := request.Context()
+		userID := dcontext.GetUserIDFromContext(ctx)
 		var requestBody setFavoriteRequest
 		if err := json.NewDecoder(request.Body).Decode(&requestBody); err != nil {
 			log.Println(err)
@@ -87,7 +93,7 @@ func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
 			return
 		}
 
-		if err := lh.LifeModelUseCase.SetFavorite(requestBody.ID); err != nil {
+		if err := lh.LifeModelUseCase.SetFavorite(requestBody.ID, userID); err != nil {
 			log.Printf("%v", err)
 			response.InternalServerError(writer, "error")
 		}
@@ -96,10 +102,10 @@ func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
 	}
 }
 
-func (lh LifeModelHandler) HandleRanking() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-	}
+type setFavoriteRequest struct {
+	ID string `json:"id"`
 }
+type setFavoriteResponse struct{}
 
 type createLifeModelRequest struct {
 	UserID string `json:"user_id"`
@@ -116,11 +122,6 @@ type getLifeModelRequest struct {
 type getLifeModelResponse struct {
 	LifeModel *model.LifeModel
 }
-
-type setFavoriteRequest struct {
-	ID string `json:"id"`
-}
-type setFavoriteResponse struct{}
 
 type rankingLifeModelRequest struct{}
 

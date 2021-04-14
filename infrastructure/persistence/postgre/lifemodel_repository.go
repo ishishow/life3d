@@ -35,17 +35,18 @@ func (lri *lifeModelRepositoryImpl) SetFavorite(ID string, userID string) error 
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(ID, userID)
+	_, err = stmt.Exec(userID, ID)
 	return err
 }
 
-func (lri *lifeModelRepositoryImpl) GetFavorite(ID string, userID string) error {
-	stmt, err := lri.SQLHandler.Conn.Prepare("INSERT INTO favorites(user_id, life_model_id) VALUES ($1, $2);")
-	if err != nil {
-		return err
-	}
-	_, err = stmt.Exec(ID, userID)
-	return err
+func (lri *lifeModelRepositoryImpl) GetFavoriteCount(lifeModelID string) (count int, err error) {
+	row := lri.SQLHandler.Conn.QueryRow("SELECT COUNT(*) FROM favorites WHERE life_model_id = $1", lifeModelID)
+	err = row.Scan(&count)
+	return count, err
+}
+
+func (lri *lifeModelRepositoryImpl) Ranking() error {
+	panic("implement me")
 }
 
 // convertToLifeModel rowデータをUserデータへ変換する

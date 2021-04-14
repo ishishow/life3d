@@ -40,6 +40,10 @@ func (lu *lifeModelUseCase) Get(ID string) (*model.LifeModel, error) {
 	if err != nil {
 		return lifeModel, err
 	}
+	lifeModel.Favorite, err = lu.lifeModelRepository.GetFavoriteCount(ID)
+	if err != nil {
+		return lifeModel, err
+	}
 	return lu.fillUserDetails(lifeModel)
 }
 
@@ -48,7 +52,7 @@ func (lu *lifeModelUseCase) SetFavorite(ID string, userID string) error {
 }
 
 func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
-	lu.lifeModelRepository.
+	//lu.lifeModelRepository.
 	return nil, nil
 }
 
