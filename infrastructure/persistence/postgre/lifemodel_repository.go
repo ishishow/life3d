@@ -45,8 +45,12 @@ func (lri *lifeModelRepositoryImpl) GetFavoriteCount(lifeModelID string) (count 
 	return count, err
 }
 
-func (lri *lifeModelRepositoryImpl) Ranking() error {
-	panic("implement me")
+func (lri *lifeModelRepositoryImpl) Ranking() ([]*model.Favorite, error) {
+	rows, err := lri.SQLHandler.Conn.Query("SELECT * FROM favorites")
+	if err != nil {
+		return nil, err
+	}
+	return convertToLifeModels(rows)
 }
 
 // convertToLifeModel rowデータをUserデータへ変換する
@@ -65,4 +69,17 @@ func convertToLifeModel(row *sql.Row) (*model.LifeModel, error) {
 		Name:      "",
 	}
 	return &lifeModel, nil
+}
+
+func convertToLifeModels(rows *sql.Rows) ([]*model.Favorite, error) {
+	favorites := []*model.Favorite{}
+
+	for rows.Next() {
+		favorite := model.Favorite{}
+		if err := rows.Scan(&favorite.UserID, &favorite.ModelID); err != nil {
+			return nil, err
+		}
+		favorites = append(favorites, &favorite)
+	}
+	return favorites, nil
 }

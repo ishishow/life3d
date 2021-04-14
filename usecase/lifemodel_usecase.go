@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"lifegame/domain/model"
 	"lifegame/domain/repository"
 
@@ -52,8 +53,37 @@ func (lu *lifeModelUseCase) SetFavorite(ID string, userID string) error {
 }
 
 func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
-	//lu.lifeModelRepository.
-	return nil, nil
+	favorites, err := lu.lifeModelRepository.Ranking()
+	if err != nil {
+		return nil, err
+	}
+	lifeModels := []*model.LifeModel{}
+	fmt.Println(favorites)
+
+	for _, favorite := range favorites {
+		fmt.Printf("aa%s", favorite.ModelID)
+		lifeModel, err := lu.Get(favorite.ModelID)
+		if err != nil {
+			return lifeModels, err
+		}
+		lifeModel.Favorite, err = lu.lifeModelRepository.GetFavoriteCount(lifeModel.ID)
+		if err != nil {
+			return lifeModels, err
+		}
+		lifeModels = append(lifeModels, lifeModel)
+	}
+
+	for i := range lifeModels {
+		for j := i; j < len(lifeModels); j++ {
+			if lifeModels[i].Favorite > lifeModels[j].Favorite {
+				break
+			}
+			tmp := lifeModels[i]
+			lifeModels[i] = lifeModels[j]
+			lifeModels[j] = tmp
+		}
+	}
+	return lifeModels, nil
 }
 
 func (lu *lifeModelUseCase) fillUserDetails(lifeModel *model.LifeModel) (*model.LifeModel, error) {

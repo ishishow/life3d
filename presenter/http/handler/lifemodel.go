@@ -79,7 +79,15 @@ func (lh LifeModelHandler) HandleGet() http.HandlerFunc {
 }
 
 func (lh LifeModelHandler) HandleRanking() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {}
+	return func(writer http.ResponseWriter, request *http.Request) {
+		lifeModelList, err := lh.LifeModelUseCase.Ranking()
+		if err != nil {
+			log.Printf("%v", err)
+			response.InternalServerError(writer, "error")
+		}
+
+		response.Success(writer, lifeModelList)
+	}
 }
 
 func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
