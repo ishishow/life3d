@@ -110,6 +110,21 @@ func (lh LifeModelHandler) HandleSetFavorite() http.HandlerFunc {
 	}
 }
 
+func (lh LifeModelHandler) HandleUserModels() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		ctx := request.Context()
+		userID := dcontext.GetUserIDFromContext(ctx)
+
+		lifeModelList, err := lh.LifeModelUseCase.UserModels(userID)
+		if err != nil {
+			log.Printf("%v", err)
+			response.InternalServerError(writer, "error")
+		}
+
+		response.Success(writer, &lifeModelList)
+	}
+}
+
 type setFavoriteRequest struct {
 	ID string `json:"id"`
 }

@@ -8,4 +8,5 @@ type LifeModelRepository interface {
 	SetFavorite(ID string, userID string) error
 	GetFavoriteCount(ID string) (int, error)
 	Ranking() ([]*model.Favorite, error)
+	UserModels(userID string) ([]*model.LifeModel, error)
 }

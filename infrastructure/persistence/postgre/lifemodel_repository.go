@@ -53,6 +53,14 @@ func (lri *lifeModelRepositoryImpl) Ranking() ([]*model.Favorite, error) {
 	return convertToLifeModels(rows)
 }
 
+func (lri *lifeModelRepositoryImpl) UserModels(userID string) ([]*model.LifeModel, error) {
+	rows, err := lri.SQLHandler.Conn.Query("SELECT * FROM life_models WHERE user_id = $1", userID)
+	if err != nil {
+		return nil, err
+	}
+	return convertToLifeModelList(rows)
+}
+
 // convertToLifeModel rowデータをUserデータへ変換する
 func convertToLifeModel(row *sql.Row) (*model.LifeModel, error) {
 	lifeModel := model.LifeModel{}
@@ -69,6 +77,25 @@ func convertToLifeModel(row *sql.Row) (*model.LifeModel, error) {
 		Name:      "",
 	}
 	return &lifeModel, nil
+}
+
+func convertToLifeModelList(rows *sql.Rows) ([]*model.LifeModel, error) {
+	lifeModels := []*model.LifeModel{}
+	var userID string
+
+	for rows.Next() {
+		lifeModel := model.LifeModel{}
+		if err := rows.Scan(&lifeModel.ID, &userID, &lifeModel.Name, &lifeModel.Map); err != nil {
+			return nil, err
+		}
+		lifeModel.User = &model.User{
+			ID:        userID,
+			AuthToken: "",
+			Name:      "",
+		}
+		lifeModels = append(lifeModels, &lifeModel)
+	}
+	return lifeModels, nil
 }
 
 func convertToLifeModels(rows *sql.Rows) ([]*model.Favorite, error) {

@@ -13,6 +13,7 @@ type LifeModelUseCase interface {
 	Get(ID string) (*model.LifeModel, error)
 	Ranking() ([]*model.LifeModel, error)
 	SetFavorite(ID string, userID string) error
+	UserModels(userID string) ([]*model.LifeModel, error)
 }
 
 type lifeModelUseCase struct {
@@ -84,6 +85,10 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 		}
 	}
 	return lifeModels, nil
+}
+
+func (lu *lifeModelUseCase) UserModels(userID string) ([]*model.LifeModel, error) {
+	return lu.lifeModelRepository.UserModels(userID)
 }
 
 func (lu *lifeModelUseCase) fillUserDetails(lifeModel *model.LifeModel) (*model.LifeModel, error) {
