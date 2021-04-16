@@ -4,7 +4,7 @@
 - unity
 - React　⇨ https://logmi.jp/tech/articles/323164
 - golang
-- heroku
+- heroku →　https://lifegame-3d.herokuapp.com
 - postgres
 
 ## ユースケース
@@ -29,6 +29,15 @@
 - model/get GET 他のモデル情報を返す
 - model/favorite GET 他のモデル情報を返す
 
+```shell
+curl -X 'POST' 'https://lifegame-3d.herokuapp.com/user/create' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"name": "ishishow-test03"}'
+curl -X 'GET'       'https://lifegame-3d.herokuapp.com/user/get'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'
+curl -X 'POST'       'https://lifegame-3d.herokuapp.com/model/create'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'     -d '{"user_id": "a62127d1-1ef3-443d-95b8-6eee7673728c", "name": "graider", "map": [1,1,1,1,0,0,0,2]}'
+curl -X 'GET'       'https://lifegame-3d.herokuapp.com/model/get'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'     -d '{"id": "0c652fa5-002b-49cc-81c7-754d922a13ca"}'
+curl -X 'POST'       'https://lifegame-3d.herokuapp.com/model/favorite'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'     -d '{"id": "0c652fa5-002b-49cc-81c7-754d922a13ca"}'
+curl -X 'GET'       'https://lifegame-3d.herokuapp.com/model/ranking'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'      | jq .
+curl -X 'GET'   'https://lifegame-3d.herokuapp.com/model/users'   -H 'accept: application/json'   -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'
+```
 ## エンドポイント
 編集中
 
