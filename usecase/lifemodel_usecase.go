@@ -60,10 +60,18 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 	}
 	lifeModels := []*model.LifeModel{}
 	fmt.Println(favorites)
+	modelIDList := []string{}
+	modelIDMap := make(map[string]bool)
 
 	for _, favorite := range favorites {
-		fmt.Printf("aa%s", favorite.ModelID)
-		lifeModel, err := lu.Get(favorite.ModelID)
+		if !modelIDMap[favorite.ModelID] {
+			modelIDMap[favorite.ModelID] = true
+			modelIDList = append(modelIDList, favorite.ModelID)
+		}
+	}
+
+	for _, modelID := range modelIDList {
+		lifeModel, err := lu.Get(modelID)
 		if err != nil {
 			return lifeModels, err
 		}
