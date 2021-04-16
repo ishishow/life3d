@@ -96,7 +96,22 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 }
 
 func (lu *lifeModelUseCase) UserModels(userID string) ([]*model.LifeModel, error) {
-	return lu.lifeModelRepository.UserModels(userID)
+	lifeModels, err := lu.lifeModelRepository.UserModels(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, lifeModel := range lifeModels {
+		lifeModel, err = lu.fillUserDetails(lifeModel)
+		if err != nil {
+			return nil, err
+		}
+		lifeModel.Favorite, err = lu.lifeModelRepository.GetFavoriteCount(lifeModel.ID)
+		if err != nil {
+			return lifeModels, err
+		}
+	}
+	return lifeModels, nil
 }
 
 func (lu *lifeModelUseCase) fillUserDetails(lifeModel *model.LifeModel) (*model.LifeModel, error) {
