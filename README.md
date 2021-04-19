@@ -23,7 +23,7 @@
 ## API仕様
 - user/create  POST ユーザー登録
 - user/get  GET ユーザーネーム取得
-- user/models  GET ユーザーが登録したモデル一覧
+- model/users  GET ユーザーが登録したモデル一覧
 - model/ranking GET モデルお気に入り順
 - model/create POST モデル登録
 - model/get GET 他のモデル情報を返す
