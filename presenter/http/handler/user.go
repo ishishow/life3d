@@ -48,7 +48,7 @@ type userCreateRequest struct {
 }
 
 type userCreateResponse struct {
-	Token string
+	Token string `json:"token"`
 }
 
 // HandleGet ユーザー取得処理
@@ -72,8 +72,8 @@ func (h UserHandler) HandleGet() http.HandlerFunc {
 }
 
 type userGetResponse struct {
-	ID   string
-	Name string
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type userGetRequest struct{}

@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"lifegame/domain/model"
 	"lifegame/domain/repository"
 
@@ -59,7 +58,6 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 		return nil, err
 	}
 	lifeModels := []*model.LifeModel{}
-	fmt.Println(favorites)
 	modelIDList := []string{}
 	modelIDMap := make(map[string]bool)
 
@@ -69,7 +67,6 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 			modelIDList = append(modelIDList, favorite.ModelID)
 		}
 	}
-
 	for _, modelID := range modelIDList {
 		lifeModel, err := lu.Get(modelID)
 		if err != nil {
@@ -81,7 +78,6 @@ func (lu *lifeModelUseCase) Ranking() ([]*model.LifeModel, error) {
 		}
 		lifeModels = append(lifeModels, lifeModel)
 	}
-
 	for i := range lifeModels {
 		for j := i; j < len(lifeModels); j++ {
 			if lifeModels[i].Favorite > lifeModels[j].Favorite {

@@ -86,7 +86,9 @@ func (lh LifeModelHandler) HandleRanking() http.HandlerFunc {
 			response.InternalServerError(writer, "error")
 		}
 
-		response.Success(writer, lifeModelList)
+		response.Success(writer, &rankingLifeModelResponse{
+			LifeModelList: lifeModelList,
+		})
 	}
 }
 
@@ -143,11 +145,11 @@ type getLifeModelRequest struct {
 }
 
 type getLifeModelResponse struct {
-	LifeModel *model.LifeModel
+	LifeModel *model.LifeModel `json:"life_model"`
 }
 
 type rankingLifeModelRequest struct{}
 
 type rankingLifeModelResponse struct {
-	LifeModelList []*model.LifeModel
+	LifeModelList []*model.LifeModel `json:"life_model_list"`
 }
