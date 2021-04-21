@@ -21,6 +21,9 @@
 - (ユーザーが自分で登録したモデルを見れるようにする)
 
 ## API仕様
+- [openAPI使用](https://github.com/ishishow/life3d/blob/master/open_api/api.document.yaml)
+
+
 - user/create  POST ユーザー登録
 - user/get  GET ユーザーネーム取得
 - model/users  GET ユーザーが登録したモデル一覧
@@ -38,11 +41,8 @@ curl -X 'POST'       'https://lifegame-3d.herokuapp.com/model/favorite'       -H
 curl -X 'GET'       'https://lifegame-3d.herokuapp.com/model/ranking'       -H 'accept: application/json'       -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'      | jq .
 curl -X 'GET'   'https://lifegame-3d.herokuapp.com/model/users'   -H 'accept: application/json'   -H 'x-token: 1205a65f-7898-4686-be75-edef2a430ead'
 ```
-## エンドポイント
-編集中
 
-## schema
-編集中
+
 ```
 post user/create
 request{
